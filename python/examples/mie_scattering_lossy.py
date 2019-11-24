@@ -21,7 +21,7 @@ resolution = 25
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
 
-pml_layers = [mp.PML(thickness=dpml)]
+pml_layers = [mp.Absorber(thickness=dpml)]
 
 symmetries = [mp.Mirror(mp.Y),
               mp.Mirror(mp.Z,phase=-1)]
@@ -118,6 +118,6 @@ if mp.am_master():
     plt.xlabel('(sphere circumference)/wavelength, 2πr/λ')
     plt.ylabel('scattering efficiency, σ/πr$^{2}$')
     plt.legend(loc='upper right')
-    plt.title('Mie Scattering of a LossyDielectric Sphere')
+    plt.title('Mie Scattering of a Lossy Dielectric (Aluminum) Sphere')
     plt.tight_layout()
     plt.savefig("mie_scattering_lossy.png")
