@@ -16,12 +16,12 @@ dfrq = frq_max-frq_min
 nfrq = 100
 
 ## at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-resolution = 25
+resolution = 35
 
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
 
-pml_layers = [mp.Absorber(thickness=dpml)]
+pml_layers = [mp.PML(thickness=dpml)]
 
 symmetries = [mp.Mirror(mp.Y),
               mp.Mirror(mp.Z,phase=-1)]
