@@ -52,7 +52,7 @@ indices =  [4.8033+31.109j, 4.5304+30.004j, 4.2775+28.969j, 4.0428+28.009j, 3.82
 
 
 n_sphere = 2.0
-scatt_eff_theory = [ps.MieQ(calculated_indices[i], 1000/freqs[i], 2*r*1000, asDict=True)['Qsca'] for i in range(len(freqs))]
+scatt_eff_theory = [ps.MieQ(calculated_indices[i], 1000/freqs[i], 2*r*1000, asDict=True)['Qabs'] for i in range(len(freqs))]
 
 if mp.am_master():
     plt.figure(dpi=150)
