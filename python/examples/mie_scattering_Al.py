@@ -16,7 +16,7 @@ dfrq = frq_max-frq_min
 nfrq = 100
 
 # at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-resolution = 25
+resolution = 35
 #resolution = 3*np.floor(8/wvl_min)
 
 dpml = 0.5*wvl_max
@@ -41,8 +41,7 @@ sim = mp.Simulation(resolution=resolution,
                     boundary_layers=pml_layers,
                     sources=sources,
                     k_point=mp.Vector3(),
-                    symmetries=symmetries,
-                    Courant=0.425)
+                    symmetries=symmetries)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -80,8 +79,7 @@ sim = mp.Simulation(resolution=resolution,
                     sources=sources,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
-                    geometry=geometry,
-                    Courant=0.425)
+                    geometry=geometry)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
