@@ -42,7 +42,7 @@ sim = mp.Simulation(resolution=resolution,
                     sources=sources,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
-                    Courant=0.45)
+                    Courant=0.425)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -81,7 +81,7 @@ sim = mp.Simulation(resolution=resolution,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
                     geometry=geometry,
-                    Courant=0.45)
+                    Courant=0.425)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
