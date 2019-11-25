@@ -1,7 +1,6 @@
 import meep as mp
 from meep.materials import Al
 import numpy as np
-#import numpy.linalg as la
 import matplotlib.pyplot as plt
 import PyMieScatt as ps
 
