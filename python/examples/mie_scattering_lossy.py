@@ -1,9 +1,8 @@
 import meep as mp
 from meep.materials import Al
 import numpy as np
-#import numpy.linalg as la
 import matplotlib.pyplot as plt
-#import PyMieScatt as ps
+import PyMieScatt as ps
 
 r = 1.0  # radius of sphere
 
@@ -17,8 +16,8 @@ dfrq = frq_max-frq_min
 nfrq = 100
 
 # at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-#resolution = 25
-resolution = 3*np.floor(8/wvl_min)
+resolution = 25
+#resolution = 3*np.floor(8/wvl_min)
 
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
@@ -111,8 +110,7 @@ scatt_flux = np.asarray(box_x1_flux)-np.asarray(box_x2_flux)+np.asarray(box_y1_f
 intensity = np.asarray(box_x1_flux0)/(2*r)**2
 scatt_cross_section = np.divide(scatt_flux,intensity)
 scatt_eff_meep = scatt_cross_section*-1/(np.pi*r**2)
-#calculated_indices = [np.sqrt(la.det(Al.epsilon(f))) for f in freqs]
-#scatt_eff_theory = [ps.MieQ(calculated_indices[i], 1000/freqs[i], 2*r*1000, asDict=True)['Qsca'] for i in range(len(freqs))]
+scatt_eff_theory = [ps.MieQ(np.sqrt(Al.epsilon(f)[0,0]),1000/f,2*r*1000,asDict=True)['Qsca'] for f in freqs]
 
 if mp.am_master():
     plt.figure(dpi=150)

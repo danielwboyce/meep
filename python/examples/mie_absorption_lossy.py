@@ -3,7 +3,7 @@ from meep.materials import Al
 import numpy as np
 #import numpy.linalg as la
 import matplotlib.pyplot as plt
-#import PyMieScatt as ps
+import PyMieScatt as ps
 
 r = 1.0  # radius of sphere
 
@@ -17,8 +17,8 @@ dfrq = frq_max-frq_min
 nfrq = 100
 
 # at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-#resolution = 25
-resolution = 3*np.floor(8/wvl_min)
+resolution = 25
+#resolution = 3*np.floor(8/wvl_min)
 
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
@@ -104,13 +104,12 @@ abs_flux = np.asarray(box_x1_flux) - np.asarray(box_x2_flux) + np.asarray(box_y1
 intensity = np.asarray(box_x1_flux0)/(2*r)**2
 abs_cross_section = np.divide(abs_flux, intensity)
 abs_eff_meep = abs_cross_section/(np.pi*r ** 2)
-#calculated_indices = [np.sqrt(la.det(Al.epsilon(f))) for f in freqs]
-#abs_eff_theory = [ps.MieQ(calculated_indices[i], 1000/freqs[i], 2*r*1000, asDict=True)['Qabs'] for i in range(len(freqs))]
+abs_eff_theory = [ps.MieQ(np.sqrt(Al.epsilon(f)[0,0]),1000/f,2*r*1000,asDict=True)['Qabs'] for f in freqs]
 
 if mp.am_master():
     plt.figure(dpi=150)
     plt.loglog(2 * np.pi * r * np.asarray(freqs), abs_eff_meep, 'bo-', label='Meep')
-    #plt.loglog(2 * np.pi * r * np.asarray(freqs), abs_eff_theory, 'ro-', label='theory')
+    plt.loglog(2 * np.pi * r * np.asarray(freqs), abs_eff_theory, 'ro-', label='theory')
     plt.grid(True,which="both",ls="-")
     plt.xlabel('(sphere circumference)/wavelength, 2πr/λ')
     plt.ylabel('absorption efficiency, σ/πr$^{2}$')
