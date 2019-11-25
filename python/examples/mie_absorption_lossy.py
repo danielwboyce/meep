@@ -101,7 +101,7 @@ box_z2_flux = mp.get_fluxes(box_z2)
 abs_flux = np.asarray(box_x1_flux) - np.asarray(box_x2_flux) + np.asarray(box_y1_flux) - np.asarray(box_y2_flux) + np.asarray(box_z1_flux) - np.asarray(box_z2_flux)
 intensity = np.asarray(box_x1_flux0)/(2*r)**2
 abs_cross_section = np.divide(abs_flux, intensity)
-abs_eff_meep = abs_cross_section*-1/(np.pi*r ** 2)
+abs_eff_meep = abs_cross_section/(np.pi*r ** 2)
 #abs_eff_theory = [ps.MieQ(1.3891 + 10.052j, 1000 / f, 2 * r * 1000, asDict=True)['Qabs'] for f in freqs]
 
 if mp.am_master():
