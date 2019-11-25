@@ -2,7 +2,7 @@ import meep as mp
 from meep.materials import Al
 import numpy as np
 import matplotlib.pyplot as plt
-import PyMieScatt as ps
+#import PyMieScatt as ps
 
 r = 1.0  # radius of sphere
 
@@ -15,8 +15,8 @@ frq_cen = 0.5*(frq_min+frq_max)
 dfrq = frq_max-frq_min
 nfrq = 100
 
-## at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-resolution = 35
+# at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
+resolution = 25
 
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
@@ -40,7 +40,8 @@ sim = mp.Simulation(resolution=resolution,
                     boundary_layers=pml_layers,
                     sources=sources,
                     k_point=mp.Vector3(),
-                    symmetries=symmetries)
+                    symmetries=symmetries,
+                    Courant=0.4)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -68,7 +69,6 @@ box_z2_flux0 = mp.get_fluxes(box_z2)
 
 sim.reset_meep()
 
-n_sphere = 2.0
 geometry = [mp.Sphere(material=Al,
                       center=mp.Vector3(),
                       radius=r)]
@@ -79,7 +79,8 @@ sim = mp.Simulation(resolution=resolution,
                     sources=sources,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
-                    geometry=geometry)
+                    geometry=geometry,
+                    Courant=0.4)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -108,12 +109,12 @@ scatt_flux = np.asarray(box_x1_flux)-np.asarray(box_x2_flux)+np.asarray(box_y1_f
 intensity = np.asarray(box_x1_flux0)/(2*r)**2
 scatt_cross_section = np.divide(scatt_flux,intensity)
 scatt_eff_meep = scatt_cross_section*-1/(np.pi*r**2)
-#scatt_eff_theory = [ps.MieQ(n_sphere,1000/f,2*r*1000,asDict=True)['Qsca'] for f in freqs]
+#scatt_eff_theory = [ps.MieQ(1.3891+10.052j,1000/f,2*r*1000,asDict=True)['Qsca'] for f in freqs]
 
 if mp.am_master():
     plt.figure(dpi=150)
     plt.loglog(2*np.pi*r*np.asarray(freqs),scatt_eff_meep,'bo-',label='Meep')
-#    plt.loglog(2*np.pi*r*np.asarray(freqs),scatt_eff_theory,'ro-',label='theory')
+    #plt.loglog(2*np.pi*r*np.asarray(freqs),scatt_eff_theory,'ro-',label='theory')
     plt.grid(True,which="both",ls="-")
     plt.xlabel('(sphere circumference)/wavelength, 2πr/λ')
     plt.ylabel('scattering efficiency, σ/πr$^{2}$')
