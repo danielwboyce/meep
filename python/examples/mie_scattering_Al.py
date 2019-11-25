@@ -90,6 +90,13 @@ box_y2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(y=+r)
 box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r),size=mp.Vector3(2*r,2*r,0)))
 box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r),size=mp.Vector3(2*r,2*r,0)))
 
+sim.load_minus_flux_data(box_x1, box_x1_data)
+sim.load_minus_flux_data(box_x2, box_x2_data)
+sim.load_minus_flux_data(box_y1, box_y1_data)
+sim.load_minus_flux_data(box_y2, box_y2_data)
+sim.load_minus_flux_data(box_z1, box_z1_data)
+sim.load_minus_flux_data(box_z2, box_z2_data)
+
 sim.run(until_after_sources=100)
 
 box_x1_flux = mp.get_fluxes(box_x1)
@@ -99,20 +106,20 @@ box_y2_flux = mp.get_fluxes(box_y2)
 box_z1_flux = mp.get_fluxes(box_z1)
 box_z2_flux = mp.get_fluxes(box_z2)
 
-abs_flux = np.asarray(box_x1_flux) - np.asarray(box_x2_flux) + np.asarray(box_y1_flux) - np.asarray(box_y2_flux) + np.asarray(box_z1_flux) - np.asarray(box_z2_flux)
+scatt_flux = np.asarray(box_x1_flux)-np.asarray(box_x2_flux)+np.asarray(box_y1_flux)-np.asarray(box_y2_flux)+np.asarray(box_z1_flux)-np.asarray(box_z2_flux)
 intensity = np.asarray(box_x1_flux0)/(2*r)**2
-abs_cross_section = np.divide(abs_flux, intensity)
-abs_eff_meep = abs_cross_section/(np.pi*r ** 2)
-abs_eff_theory = [ps.MieQ(np.sqrt(Al.epsilon(f)[0,0]),1000/f,2*r*1000,asDict=True)['Qabs'] for f in freqs]
+scatt_cross_section = np.divide(scatt_flux,intensity)
+scatt_eff_meep = scatt_cross_section*-1/(np.pi*r**2)
+scatt_eff_theory = [ps.MieQ(np.sqrt(Al.epsilon(f)[0,0]),1000/f,2*r*1000,asDict=True)['Qsca'] for f in freqs]
 
 if mp.am_master():
     plt.figure(dpi=150)
-    plt.loglog(2 * np.pi * r * np.asarray(freqs), abs_eff_meep, 'bo-', label='Meep')
-    plt.loglog(2 * np.pi * r * np.asarray(freqs), abs_eff_theory, 'ro-', label='theory')
+    plt.loglog(2*np.pi*r*np.asarray(freqs),scatt_eff_meep,'bo-',label='Meep')
+    #plt.loglog(2*np.pi*r*np.asarray(freqs),scatt_eff_theory,'ro-',label='theory')
     plt.grid(True,which="both",ls="-")
     plt.xlabel('(sphere circumference)/wavelength, 2πr/λ')
-    plt.ylabel('absorption efficiency, σ/πr$^{2}$')
+    plt.ylabel('scattering efficiency, σ/πr$^{2}$')
     plt.legend(loc='upper right')
-    plt.title('Mie Absorption of a Lossy Dielectric (Aluminum) Sphere')
+    plt.title('Mie Scattering of an Aluminum Sphere')
     plt.tight_layout()
-    plt.savefig("mie_absorption_lossy.png")
+    plt.savefig("mie_scattering_Al.png")
