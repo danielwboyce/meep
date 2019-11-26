@@ -53,19 +53,8 @@ box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r)
 sim.run(until_after_sources=20)
 
 freqs = mp.get_flux_freqs(box_x1)
-box_x1_data = sim.get_flux_data(box_x1)
-box_x2_data = sim.get_flux_data(box_x2)
-box_y1_data = sim.get_flux_data(box_y1)
-box_y2_data = sim.get_flux_data(box_y2)
-box_z1_data = sim.get_flux_data(box_z1)
-box_z2_data = sim.get_flux_data(box_z2)
 
 box_x1_flux0 = mp.get_fluxes(box_x1)
-box_x2_flux0 = mp.get_fluxes(box_x2)
-box_y1_flux0 = mp.get_fluxes(box_y1)
-box_y2_flux0 = mp.get_fluxes(box_y2)
-box_z1_flux0 = mp.get_fluxes(box_z1)
-box_z2_flux0 = mp.get_fluxes(box_z2)
 
 sim.reset_meep()
 
