@@ -3,6 +3,7 @@ from meep.materials import Al
 import numpy as np
 import matplotlib.pyplot as plt
 import PyMieScatt as ps
+from math import floor
 
 r = 1.0  # radius of sphere
 
@@ -44,7 +45,7 @@ smoothed_relative_errors = []
 unsmoothed_relative_errors = []
 
 for res in resolutions:
-    sim = mp.Simulation(resolution=res,
+    sim = mp.Simulation(resolution=floor(res),
                         cell_size=cell_size,
                         boundary_layers=pml_layers,
                         sources=sources,
@@ -73,7 +74,7 @@ for res in resolutions:
                           center=mp.Vector3(),
                           radius=r)]
 
-    sim = mp.Simulation(resolution=res,
+    sim = mp.Simulation(resolution=floor(res),
                         cell_size=cell_size,
                         boundary_layers=pml_layers,
                         sources=sources,
@@ -115,7 +116,7 @@ for res in resolutions:
                           center=mp.Vector3(),
                           radius=r)]
 
-    sim = mp.Simulation(resolution=res,
+    sim = mp.Simulation(resolution=floor(res),
                         cell_size=cell_size,
                         boundary_layers=pml_layers,
                         sources=sources,
