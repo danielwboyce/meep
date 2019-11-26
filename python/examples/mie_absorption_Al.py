@@ -16,7 +16,7 @@ dfrq = frq_max-frq_min
 nfrq = 100
 
 # at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
-resolution = 25
+resolution = 40
 
 dpml = 0.5*wvl_max
 dair = 0.5*wvl_max
@@ -41,7 +41,7 @@ sim = mp.Simulation(resolution=resolution,
                     sources=sources,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
-                    Courant=0.4)
+                    Courant=0.5)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -50,7 +50,7 @@ box_y2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(y=+r)
 box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r),size=mp.Vector3(2*r,2*r,0)))
 box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r),size=mp.Vector3(2*r,2*r,0)))
 
-sim.run(until_after_sources=20)
+sim.run(until_after_sources=10)
 
 freqs = mp.get_flux_freqs(box_x1)
 
@@ -69,7 +69,7 @@ sim = mp.Simulation(resolution=resolution,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
                     geometry=geometry,
-                    Courant=0.4)
+                    Courant=0.5)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -78,7 +78,7 @@ box_y2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(y=+r)
 box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r),size=mp.Vector3(2*r,2*r,0)))
 box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r),size=mp.Vector3(2*r,2*r,0)))
 
-sim.run(until_after_sources=200)
+sim.run(until_after_sources=100)
 
 box_x1_flux = mp.get_fluxes(box_x1)
 box_x2_flux = mp.get_fluxes(box_x2)
