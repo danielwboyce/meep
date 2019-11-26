@@ -2,7 +2,6 @@ import meep as mp
 from meep.materials import Al
 import numpy as np
 from math import floor
-import matplotlib.pyplot as plt
 import PyMieScatt as ps
 import argparse
 
@@ -23,9 +22,6 @@ def main(args):
 
     # at least 8 pixels per smallest wavelength, i.e. np.floor(8/wvl_min)
     resolution = floor(args.res)
-    #f = open("resolutions.txt","w+")
-    #f.write(f'The tested resolutions are: {resolutions}')
-    #f.close()
 
     dpml = 0.5*wvl_max
     dair = 0.5*wvl_max
@@ -44,11 +40,7 @@ def main(args):
                          size=mp.Vector3(0,s,s),
                          component=mp.Ez)]
 
-    #smoothed_relative_errors = []
-    #unsmoothed_relative_errors = []
-
     Courant = args.courant
-
 
     sim = mp.Simulation(resolution=resolution,
                         cell_size=cell_size,
@@ -56,11 +48,12 @@ def main(args):
                         sources=sources,
                         k_point=mp.Vector3(),
                         symmetries=symmetries,
-                        Courant=Courant)
+                        Courant=Courant,
+                        eps_averaging=True)
 
     box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 
-    sim.run(until_after_sources=20)
+    sim.run(until_after_sources=10)
 
     freqs = mp.get_flux_freqs(box_x1)
     wvls = [1/f for f in freqs]
@@ -81,7 +74,8 @@ def main(args):
                         k_point=mp.Vector3(),
                         symmetries=symmetries,
                         geometry=geometry,
-                        Courant=Courant)
+                        Courant=Courant,
+                        eps_averaging=True)
 
     box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
     box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -90,7 +84,7 @@ def main(args):
     box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r),size=mp.Vector3(2*r,2*r,0)))
     box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r),size=mp.Vector3(2*r,2*r,0)))
 
-    sim.run(until_after_sources=200)
+    sim.run(until_after_sources=100)
 
     box_x1_flux = mp.get_fluxes(box_x1)
     box_x2_flux = mp.get_fluxes(box_x2)
@@ -109,8 +103,6 @@ def main(args):
 
     sim.reset_meep()
 
-    Al.do_averaging = False
-
     geometry = [mp.Sphere(material=Al,
                           center=mp.Vector3(),
                           radius=r)]
@@ -122,7 +114,8 @@ def main(args):
                         k_point=mp.Vector3(),
                         symmetries=symmetries,
                         geometry=geometry,
-                        Courant=Courant)
+                        Courant=Courant,
+                        eps_averaging=False)
 
     box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r), size=mp.Vector3(0, 2 * r, 2 * r)))
     box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r), size=mp.Vector3(0, 2 * r, 2 * r)))
@@ -131,7 +124,7 @@ def main(args):
     box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r), size=mp.Vector3(2 * r, 2 * r, 0)))
     box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r), size=mp.Vector3(2 * r, 2 * r, 0)))
 
-    sim.run(until_after_sources=200)
+    sim.run(until_after_sources=100)
 
     box_x1_flux = mp.get_fluxes(box_x1)
     box_x2_flux = mp.get_fluxes(box_x2)
@@ -149,37 +142,18 @@ def main(args):
     ps.MieQ(np.sqrt(Al.epsilon(freqs[closest_index])[0, 0]), 1000 / freqs[closest_index], 2 * r * 1000, asDict=True)['Qabs']
     unsmoothed_relative_error = abs(abs_eff_meep - abs_eff_theory) / abs_eff_theory
 
-    output = f'Resolution (pixels/um):\n' \
-             f'{resolution}\n' \
-             f'Courant condition:\n' \
-             f'{Courant}\n' \
-             f'Relative error found with subpixel smoothing ON:\n' \
-             f'{smoothed_relative_error}\n' \
-             f'Relative error found with subpixel smoothing OFF:\n' \
-             f'{unsmoothed_relative_error}'
+    output = 'Resolution (pixels/um):\n{}\nCourant condition:\n{}\nRelative error found with subpixel smoothing ON:\n{}\nRelative error found with subpixel smoothing OFF:\n{}'.format(resolution,Courant,smoothed_relative_error,unsmoothed_relative_error)
 
+    print(output)
     f = open(args.out,"w+")
     f.write(output)
     f.close()
-    print(output)
-
-    #if mp.am_master():
-        #plt.figure(dpi=150)
-        #plt.loglog(resolutions, smoothed_relative_errors, 'bo-', label='With Pixel Smoothing')
-        #plt.loglog(resolutions, unsmoothed_relative_errors, 'ro-', label='Without Pixel Smoothing')
-        #plt.grid(True,which="both",ls="-")
-        #plt.xlabel('resolution (pixels/μm)')
-        #plt.ylabel('relative error in MEEP calculation (compared to PyMieScatt)')
-        #plt.legend(loc='upper right')
-        #plt.title('Relative Error in Mie Absorption Efficiency, Comparing MEEP and PyMieScatt')
-        #plt.tight_layout()
-        #plt.savefig("mie_absorption_error.png")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-res', type=int, default=25, help='Resolution (default: 25 pixels/um)')
     parser.add_argument('-courant', type=float, default=0.5, help='Courant condition (default: 0.5, cannot be more than 0.5)')
-    parser.add_argument('-out', type=string, default='data.txt', help='File path where collected data will be written to (default: data.txt')
+    parser.add_argument('-out', default='data.txt', help='File path where collected data will be written to (default: data.txt')
     args = parser.parse_args()
     main(args)
