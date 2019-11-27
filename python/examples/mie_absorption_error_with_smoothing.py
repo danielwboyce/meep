@@ -101,48 +101,7 @@ def main(args):
     abs_eff_theory = ps.MieQ(np.sqrt(Al.epsilon(freqs[closest_index])[0,0]),1000/freqs[closest_index],2*r*1000,asDict=True)['Qabs']
     smoothed_relative_error = abs(abs_eff_meep-abs_eff_theory)/abs_eff_theory
 
-    sim.reset_meep()
-
-    geometry = [mp.Sphere(material=Al,
-                          center=mp.Vector3(),
-                          radius=r)]
-
-    sim = mp.Simulation(resolution=resolution,
-                        cell_size=cell_size,
-                        boundary_layers=pml_layers,
-                        sources=sources,
-                        k_point=mp.Vector3(),
-                        symmetries=symmetries,
-                        geometry=geometry,
-                        Courant=Courant,
-                        eps_averaging=False)
-
-    box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r), size=mp.Vector3(0, 2 * r, 2 * r)))
-    box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r), size=mp.Vector3(0, 2 * r, 2 * r)))
-    box_y1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(y=-r), size=mp.Vector3(2 * r, 0, 2 * r)))
-    box_y2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(y=+r), size=mp.Vector3(2 * r, 0, 2 * r)))
-    box_z1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=-r), size=mp.Vector3(2 * r, 2 * r, 0)))
-    box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r), size=mp.Vector3(2 * r, 2 * r, 0)))
-
-    sim.run(until_after_sources=100)
-
-    box_x1_flux = mp.get_fluxes(box_x1)
-    box_x2_flux = mp.get_fluxes(box_x2)
-    box_y1_flux = mp.get_fluxes(box_y1)
-    box_y2_flux = mp.get_fluxes(box_y2)
-    box_z1_flux = mp.get_fluxes(box_z1)
-    box_z2_flux = mp.get_fluxes(box_z2)
-
-    abs_flux = np.asarray(box_x1_flux) - np.asarray(box_x2_flux) + np.asarray(box_y1_flux) - np.asarray(box_y2_flux) + np.asarray(box_z1_flux) - np.asarray(box_z2_flux)
-    intensity = np.asarray(box_x1_flux0) / (2 * r) ** 2
-    abs_cross_section = np.divide(abs_flux, intensity)
-    abs_eff_meep_all = abs_cross_section / (np.pi * r ** 2)
-    abs_eff_meep = abs_eff_meep_all[closest_index]
-    abs_eff_theory = \
-    ps.MieQ(np.sqrt(Al.epsilon(freqs[closest_index])[0, 0]), 1000 / freqs[closest_index], 2 * r * 1000, asDict=True)['Qabs']
-    unsmoothed_relative_error = abs(abs_eff_meep - abs_eff_theory) / abs_eff_theory
-
-    output = 'Resolution (pixels/um):\n{}\nCourant condition:\n{}\nRelative error found with subpixel smoothing ON:\n{}\nRelative error found with subpixel smoothing OFF:\n{}'.format(resolution,Courant,smoothed_relative_error,unsmoothed_relative_error)
+    output = 'Resolution (pixels/um):\n{}\nCourant condition:\n{}\nRelative error found with subpixel smoothing ON:\n{}'.format(resolution,Courant,smoothed_relative_error)
 
     print(output)
     f = open(args.out,"w+")
