@@ -40,8 +40,7 @@ sim = mp.Simulation(resolution=resolution,
                     boundary_layers=pml_layers,
                     sources=sources,
                     k_point=mp.Vector3(),
-                    symmetries=symmetries,
-                    Courant=0.5)
+                    symmetries=symmetries)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
@@ -53,8 +52,19 @@ box_z2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(z=+r)
 sim.run(until_after_sources=10)
 
 freqs = mp.get_flux_freqs(box_x1)
+box_x1_data = sim.get_flux_data(box_x1)
+box_x2_data = sim.get_flux_data(box_x2)
+box_y1_data = sim.get_flux_data(box_y1)
+box_y2_data = sim.get_flux_data(box_y2)
+box_z1_data = sim.get_flux_data(box_z1)
+box_z2_data = sim.get_flux_data(box_z2)
 
 box_x1_flux0 = mp.get_fluxes(box_x1)
+box_x2_flux0 = mp.get_fluxes(box_x2)
+box_y1_flux0 = mp.get_fluxes(box_y1)
+box_y2_flux0 = mp.get_fluxes(box_y2)
+box_z1_flux0 = mp.get_fluxes(box_z1)
+box_z2_flux0 = mp.get_fluxes(box_z2)
 
 sim.reset_meep()
 
@@ -68,8 +78,7 @@ sim = mp.Simulation(resolution=resolution,
                     sources=sources,
                     k_point=mp.Vector3(),
                     symmetries=symmetries,
-                    geometry=geometry,
-                    Courant=0.5)
+                    geometry=geometry)
 
 box_x1 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=-r),size=mp.Vector3(0,2*r,2*r)))
 box_x2 = sim.add_flux(frq_cen, dfrq, nfrq, mp.FluxRegion(center=mp.Vector3(x=+r),size=mp.Vector3(0,2*r,2*r)))
