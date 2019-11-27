@@ -879,9 +879,7 @@ if mp.am_master():
 
 <center>![](../images/mie_absorption_Al.png)</center>
 
-It was necessary to increase the resolution because subpixel smoothing [only functions](../FAQ.md#can-subpixel-averaging-be-applied-to-dispersive-materials) on the non-dispersive (real) part of a dispersive material, reducing the convergence error to be approximately first-order instead of second-order. That being said, subpixel averaging can still certainly be useful when applied to the non-dispersive part of a material, and can still improve accuracy at some resolutions, shown here.
-
-<center>![](../images/mie_absorption_error.png)</center>
+It was necessary to increase the resolution because subpixel smoothing [only functions](../FAQ.md#can-subpixel-averaging-be-applied-to-dispersive-materials) on the non-dispersive (real) part of a dispersive material, reducing the convergence error to be approximately first-order instead of second-order.
 
 ### Differential/Radar Cross Section
 
