@@ -74,7 +74,7 @@ def main():
     # AND at the inner and outer surfaces are treated differently, so each will be calculated separately.
 
     # section for fields at inner surface
-    npts_inner = 10
+    npts_inner = 100
     angles_inner = 2 * np.pi / npts_inner * np.arange(npts_inner)
     deps_inner = 1 - n ** 2
 
