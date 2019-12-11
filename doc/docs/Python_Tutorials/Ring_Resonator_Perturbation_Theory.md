@@ -103,7 +103,7 @@ $\mathrm{d}\omega/\mathrm{d}R$ using Eq. (3) found in [Physical Review E, Volume
 
 <center>
 
-![](https://latex.codecogs.com/png.latex?\large&space;\frac{\mathrm{d}&space;\omega}{\mathrm{d}&space;R}&space;=&space;-&space;\frac{\omega^{(0)}}{2}&space;\frac{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle}{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\epsilon&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle})
+![](https://latex.codecogs.com/png.latex?\large&space;\frac{\mathrm{d}&space;\omega}{\mathrm{d}&space;R}&space;=&space;-&space;\frac{\omega^{(0)}}{2}&space;\frac{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle}{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\epsilon&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle},)
 
 </center>
 
@@ -111,7 +111,7 @@ where the numerator is Eq. (12) from the same paper
 
 <center>
 
-![](https://latex.codecogs.com/png.latex?\large&space;\left&space;\langle&space;E&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{\prime}&space;\right&space;\rangle&space;=&space;\int&space;\mathrm{d}A&space;\frac{\mathrm{d}&space;h}{\mathrm{d}&space;R}&space;[\Delta&space;\epsilon_{12}&space;(\textbf{E}_{\parallel}^{\ast}&space;-&space;\textbf{E}_{\parallel}^{\prime})&space;-&space;\Delta(\epsilon_{12}^{-1})(D_{\perp}^{\ast}&space;-&space;D_{\perp}^{\prime})])
+![](https://latex.codecogs.com/png.latex?\large&space;\left&space;\langle&space;E&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{\prime}&space;\right&space;\rangle&space;=&space;\int&space;\mathrm{d}A&space;\frac{\mathrm{d}&space;h}{\mathrm{d}&space;R}&space;[\Delta&space;\epsilon_{12}&space;(\textbf{E}_{\parallel}^{\ast}&space;-&space;\textbf{E}_{\parallel}^{\prime})&space;-&space;\Delta(\epsilon_{12}^{-1})(D_{\perp}^{\ast}&space;-&space;D_{\perp}^{\prime})].)
 
 </center>
 
@@ -177,7 +177,7 @@ is changed by a perturbation value $\mathrm{d}R$, following
 
 <center>
 
-![](https://latex.codecogs.com/png.latex?\large&space;\omega(R&space;&plus;&space;\mathrm{d}R)&space;\approx&space;\omega(R)&plus;\frac{\mathrm{d}&space;\omega}{\mathrm{d}R}\cdot&space;\Delta&space;R)
+![](https://latex.codecogs.com/png.latex?\large&space;\omega(R&space;&plus;&space;\mathrm{d}R)&space;\approx&space;\omega(R)&plus;\frac{\mathrm{d}&space;\omega}{\mathrm{d}R}\cdot&space;\Delta&space;R.)
 
 </center>
 
