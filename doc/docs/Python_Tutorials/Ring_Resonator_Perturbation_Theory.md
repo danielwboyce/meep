@@ -4,7 +4,7 @@
 
 [Perturbation theory](https://en.wikipedia.org/wiki/Perturbation_theory) is a mathematical method commonly used to find 
 an approximate solution to a problem by starting with the exact solution of a related problem and then by solving a 
-small “perturbation part” that has been added to known problem. This method is a familiar tool when solving problems in 
+small “perturbation part” that has been added to problem with the known solution. This method is a familiar tool when solving problems in 
 quantum mechanics, but can also be beneficial when solving problems in classical electrodynamics, as we will see.
 
 In [Tutorial/Ring Resonator in Cylindrical Coordinates](Ring_Resonator_in_Cylindrical_Coordinates.md) we found the 
@@ -98,4 +98,26 @@ at the resonant frequency and has an extremely narrow band (so that hopefully on
     sim.run(until_after_sources=200)
 ```
 
-Now things get a bit different. 
+Now things get a bit different. To use one simulation to predict perturbed states, we will find 
+$\mathrm{d}\omega/\mathrm{d}R$ using Eq. (3) found in [Physical Review E, Volume 65, pp. 066611-1-7, 2002](http://math.mit.edu/~stevenj/papers/JohnsonIb02.pdf)
+
+<center>
+
+![](https://latex.codecogs.com/png.latex?\large&space;\frac{\mathrm{d}&space;\omega}{\mathrm{d}&space;R}&space;=&space;-&space;\frac{\omega^{(0)}}{2}&space;\frac{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle}{\left&space;\langle&space;E^{(0)}&space;\left&space;|&space;\epsilon&space;\right&space;|&space;E^{(0)}&space;\right&space;\rangle})
+
+</center>
+
+where the numerator is Eq. (12) from the same paper
+
+<center>
+
+![](https://latex.codecogs.com/png.latex?\large&space;\left&space;\langle&space;E&space;\left&space;|&space;\frac{\mathrm{d}&space;\epsilon}{\mathrm{d}&space;R}&space;\right&space;|&space;E^{\prime}&space;\right&space;\rangle&space;=&space;\int&space;\mathrm{d}A&space;\frac{\mathrm{d}&space;h}{\mathrm{d}&space;R}&space;[\Delta&space;\epsilon_{12}&space;(\textbf{E}_{\parallel}^{\ast}&space;-&space;\textbf{E}_{\parallel}^{\prime})&space;-&space;\Delta(\epsilon_{12}^{-1})(D_{\perp}^{\ast}&space;-&space;D_{\perp}^{\prime})])
+
+</center>
+
+We will approximate Eq. (12) by using `Simulation.get_field_point()` at $N$ equally spaced points around the ring's
+inner and outer surfaces—the average (multiplied by $2 \pi R$) is a good approximation for that surface integral. Note that 
+the surface integral separates the components of the field parallel and perpendicular to the interface. In the case were the source 
+ 
+ The denominator of Eq. (3) will be calculated using `Simulation.electric_energy_in_box()`, which calculates the integral
+ of $\textbf{E} \cdot \dfrac{\textbf{D}}{2} = \epsilon \dfrac{\left | \textbf{E} \right | ^{2}}{2}$, which is exactly the integral in the denominator of Eq. (3) divided by 2.
