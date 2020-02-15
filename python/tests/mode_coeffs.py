@@ -81,7 +81,7 @@ class TestModeCoeffs(unittest.TestCase):
         self.assertTrue(res.kdom[0].close(mp.Vector3(0.604301, 0, 0)))
         self.assertTrue(res.kdom[1].close(mp.Vector3(0.494353, 0, 0), tol=1e-2))
         self.assertAlmostEqual(res.cscale[0],0.50000977,places=5)
-        self.assertAlmostEqual(res.cscale[1],0.50181621,places=5)
+        self.assertAlmostEqual(res.cscale[1], 0.5009688846284439, places=5)
         mode_power = mp.get_fluxes(mode_flux)[0]
 
         TestPassed = True
@@ -117,8 +117,8 @@ class TestModeCoeffs(unittest.TestCase):
         eval_point = mp.Vector3(0.7, -0.2, 0.3)
         ex_at_eval_point = emdata.amplitude(eval_point, mp.Ex)
         hz_at_eval_point = emdata.amplitude(eval_point, mp.Hz)
-        self.assertAlmostEqual(ex_at_eval_point, 0.45358518109307083+0.5335421986481814j)
-        self.assertAlmostEqual(hz_at_eval_point, 3.717865162096829-3.1592989829386298j)
+        self.assertAlmostEqual(ex_at_eval_point, 0.48877796400590545+0.48424014551012245j)
+        self.assertAlmostEqual(hz_at_eval_point, 3.4249236584593694-3.455974863881784j)
 
     def test_kpoint_func(self):
 
