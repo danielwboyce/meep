@@ -764,11 +764,12 @@ static int pyellipsoid_to_ellipsoid(PyObject *py_ell, geometric_object *e) {
 
 static int pyprism_to_prism(PyObject *py_prism, geometric_object *p) {
   material_type material;
-  double height;
+  double height, sidewall_angle;
   vector3 axis, center;
 
   if (!get_attr_material(py_prism, &material) || !get_attr_dbl(py_prism, &height, "height") ||
-      !get_attr_v3(py_prism, &center, "center") || !get_attr_v3(py_prism, &axis, "axis")) {
+      !get_attr_v3(py_prism, &center, "center") || !get_attr_v3(py_prism, &axis, "axis") ||
+      !get_attr_dbl(py_prism, &sidewall_angle, "sidewall_angle")) {
 
     return 0;
   }
@@ -788,7 +789,7 @@ static int pyprism_to_prism(PyObject *py_prism, geometric_object *p) {
     vertices[i] = v3;
   }
 
-  *p = make_prism(material, vertices, num_vertices, height, axis);
+  *p = make_slanted_prism(material, vertices, num_vertices, height, axis, sidewall_angle);
   p->center = center;
 
   delete[] vertices;
